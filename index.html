@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mortise — self-hosted Railway for Kubernetes</title>
+<title>Mortise · self-hosted Railway for Kubernetes</title>
 <meta name="description" content="Self-hosted Railway-style deploy platform for Kubernetes. One operator, one Helm chart, one command to install.">
 <link rel="canonical" href="https://mortise.me/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate icon" href="/avatar.png">
 <style>
   /* Tokens mirror the Mortise UI (ui/src/app.css) */
   :root {
@@ -15,17 +17,23 @@
     --surface-600: #262D26;
     --surface-500: #3C433C;
     --fg:          #ffffff;
-    --fg-muted:    #9ca3af;  /* text-gray-400 */
-    --fg-dim:      #6b7280;  /* text-gray-500 */
+    --fg-muted:    #9ca3af;
+    --fg-dim:      #6b7280;
     --accent:      #734030;
     --accent-hover:#8A5040;
-    --radius:       3px;     /* rounded-md */
+    --radius:       3px;
     --radius-lg:    4px;
+    --dot:          22px;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    background: var(--surface-900);
+    background-color: var(--surface-900);
+    background-image:
+      radial-gradient(circle at center, var(--surface-600) 1px, transparent 1.2px);
+    background-size: var(--dot) var(--dot);
+    background-position: 0 0;
+    background-attachment: fixed;
     color: var(--fg);
     font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
                     "Segoe UI", Roboto, "Helvetica Neue", Arial, "Apple Color Emoji",
@@ -43,7 +51,24 @@
     max-width: 720px;
     margin: 0 auto;
     padding: 80px 24px 120px;
+    position: relative;
   }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: var(--surface-700);
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+    font-weight: 700;
+    font-size: 34px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .logo .dot { color: var(--accent); }
 
   h1 {
     font-size: 48px;
@@ -143,11 +168,13 @@
     .tagline { font-size: 17px; }
     ul.features { grid-template-columns: 1fr; }
     main { padding: 48px 20px 80px; }
+    :root { --dot: 18px; }
   }
 </style>
 </head>
 <body>
 <main>
+  <div class="logo" aria-hidden="true">m<span class="dot">.</span></div>
   <h1>mortise<span class="dot">.</span></h1>
   <p class="tagline">Self-hosted Railway for Kubernetes. One operator, one Helm chart, one command.</p>
 
@@ -157,12 +184,12 @@
 
   <h2>What you get</h2>
   <ul class="features">
-    <li><strong>Git push deploys</strong> — connect a repo, Mortise builds and ships it.</li>
-    <li><strong>Image deploys</strong> — point at an OCI image, done.</li>
-    <li><strong>Auto TLS + domains</strong> — cert-manager wired in, one flag away.</li>
-    <li><strong>Bindings</strong> — connect apps to Postgres/Redis without plumbing env vars.</li>
-    <li><strong>Preview environments</strong> — per-PR stacks from your git provider.</li>
-    <li><strong>Role-based access</strong> — project-scoped members, restricted envs.</li>
+    <li><strong>Git push deploys.</strong> Connect a repo, Mortise builds and ships it.</li>
+    <li><strong>Image deploys.</strong> Point at an OCI image, done.</li>
+    <li><strong>Auto TLS + domains.</strong> cert-manager wired in, one flag away.</li>
+    <li><strong>Bindings.</strong> Connect apps to Postgres or Redis without plumbing env vars.</li>
+    <li><strong>Preview environments.</strong> Per-PR stacks from your git provider.</li>
+    <li><strong>Role-based access.</strong> Project-scoped members, restricted envs.</li>
   </ul>
 
   <nav>
