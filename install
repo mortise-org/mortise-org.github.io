@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Redirects `curl -fsSL https://mortise.me/install | bash` to the canonical
+# installer in the mortise repo's main branch. Zero drift — always fetches
+# the latest. Static files on GitHub Pages can't do HTTP redirects, so we
+# use a tiny shell shim instead.
+set -euo pipefail
+exec bash <(curl -fsSL https://raw.githubusercontent.com/mortise-org/mortise/main/scripts/install.sh) "$@"
