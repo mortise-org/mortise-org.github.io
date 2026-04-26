@@ -193,21 +193,14 @@
   .title-row h1 { margin: 0; }
 
   .star-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
     text-decoration: none;
     color: var(--fg-muted);
-    font-size: 13px;
-    border: 1px solid var(--surface-600);
-    border-radius: var(--radius);
-    padding: 5px 12px;
-    background: var(--surface-800);
+    font-size: 14px;
+    border-bottom: 1px solid transparent;
     transition: color 0.1s, border-color 0.1s;
     white-space: nowrap;
   }
-  .star-cta:hover { color: #facc15; border-color: #facc15; }
-  .star-cta svg { width: 13px; height: 13px; fill: currentColor; }
+  .star-cta:hover { color: var(--accent-hover); border-bottom-color: var(--accent); }
 
   nav {
     margin-top: 64px;
@@ -250,10 +243,7 @@
 <main>
 <div class="title-row">
     <h1>mortise<span class="dot">.</span></h1>
-    <a class="star-cta" href="https://github.com/mortise-org/mortise" target="_blank" rel="noopener noreferrer">
-      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 11.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
-      Star on GitHub
-    </a>
+    <a class="star-cta" href="https://github.com/mortise-org/mortise" target="_blank" rel="noopener noreferrer">⭐ Star on GitHub</a>
   </div>
   <p class="tagline">Deploy anything, own everything.</p>
 
