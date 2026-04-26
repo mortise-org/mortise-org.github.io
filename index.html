@@ -124,8 +124,25 @@
     font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
                     "Liberation Mono", "Courier New", monospace;
     margin: 0;
+    position: relative;
   }
   pre code { color: var(--fg); }
+  .copy-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--fg-dim);
+    padding: 4px;
+    line-height: 0;
+    border-radius: 4px;
+    transition: color 0.15s;
+  }
+  .copy-btn:hover { color: var(--fg); }
+  .copy-btn.copied { color: var(--accent); }
   code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
 
   .callout {
@@ -258,17 +275,17 @@
   </div>
 
   <section class="tab-panel" id="tab-macos" role="tabpanel">
-    <pre><code>curl -fsSL https://mortise.me/install | bash</code></pre>
+    <pre><code>curl -fsSL https://mortise.me/install | bash</code><button class="copy-btn" aria-label="Copy" onclick="copyPre(this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></pre>
     <p class="callout">Requires <code>Docker Desktop</code> running. The installer uses k3d (k3s-in-Docker) and drops <code>mortise</code> on your PATH.</p>
   </section>
 
   <section class="tab-panel" id="tab-linux" role="tabpanel">
-    <pre><code>curl -fsSL https://mortise.me/install | bash</code></pre>
+    <pre><code>curl -fsSL https://mortise.me/install | bash</code><button class="copy-btn" aria-label="Copy" onclick="copyPre(this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></pre>
     <p class="callout">Runs <code>k3s</code> natively. Needs <code>sudo</code>. If you already have a cluster, the installer detects and skips it.</p>
   </section>
 
   <section class="tab-panel" id="tab-windows" role="tabpanel">
-    <pre><code>iwr -useb https://mortise.me/install.ps1 | iex</code></pre>
+    <pre><code>iwr -useb https://mortise.me/install.ps1 | iex</code><button class="copy-btn" aria-label="Copy" onclick="copyPre(this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></pre>
     <p class="callout">PowerShell, Windows 10+. Requires <code>Docker Desktop</code> running. Uses k3d under the hood.</p>
   </section>
 
@@ -322,6 +339,18 @@ helm install mortise mortise/mortise \
   });
   activate(os);
 })();
+
+function copyPre(btn) {
+  var text = btn.parentElement.querySelector('code').textContent;
+  navigator.clipboard.writeText(text).then(function () {
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    setTimeout(function () {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+    }, 1500);
+  });
+}
 </script>
 </body>
 </html>
