@@ -194,13 +194,16 @@
 
   .star-cta {
     text-decoration: none;
-    color: var(--fg-muted);
+    color: var(--fg);
     font-size: 14px;
-    border-bottom: 1px solid transparent;
-    transition: color 0.1s, border-color 0.1s;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 6px 14px;
+    transition: background 0.1s, border-color 0.1s;
     white-space: nowrap;
   }
-  .star-cta:hover { color: var(--accent-hover); border-bottom-color: var(--accent); }
+  .star-cta:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
   nav {
     margin-top: 64px;
