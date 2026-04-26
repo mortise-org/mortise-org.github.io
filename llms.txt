@@ -1,0 +1,39 @@
+# Mortise
+
+> Self-hosted Railway-style deploy platform for Kubernetes. Deploy anything, own everything.
+
+Mortise is an open-source platform that gives teams Railway-style deploys on their own Kubernetes cluster. Users connect a git repo or pick an OCI image; Mortise handles builds, deploys, domains, TLS, DNS, env vars, volumes, preview environments, and service bindings. Kubernetes is fully abstracted from the user.
+
+One operator. One Helm chart. No SaaS bill.
+
+## Key concepts
+
+- **Project**: top-level grouping of apps and environments (cluster-scoped CRD)
+- **App**: the user-facing workload resource — source type is `git` or `image`
+- **Environment**: named deploy targets per app (production, staging, etc.)
+- **Binding**: connects one App to another; auto-generates HOST, PORT, and URL env vars for the bound service
+- **Preview Environment**: per-PR ephemeral stacks triggered by git webhooks
+- **PlatformConfig**: cluster-scoped singleton for domain, TLS issuer, storage class
+
+## API reference
+
+Full REST API in OpenAPI 3.0 format (always current, auto-generated):
+https://raw.githubusercontent.com/mortise-org/mortise/main/docs/swagger.yaml
+
+## For AI coding assistants
+
+Codebase operating manual (architecture rules, repo layout, testing conventions, common mistakes):
+https://raw.githubusercontent.com/mortise-org/mortise/main/CLAUDE.md
+
+Full product spec:
+https://raw.githubusercontent.com/mortise-org/mortise/main/SPEC.md
+
+## Install
+
+curl -fsSL https://mortise.me/install | bash
+
+Helm (existing cluster): https://mortise.me/#install
+
+## Source
+
+https://github.com/mortise-org/mortise
