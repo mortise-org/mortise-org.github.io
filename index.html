@@ -62,15 +62,6 @@
   }
   h1 .dot { color: var(--accent); }
 
-  .hero-headline {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--fg);
-    margin: 0 0 12px;
-    text-transform: none;
-  }
-
   .tagline {
     color: var(--fg-muted);
     font-size: 20px;
@@ -223,7 +214,6 @@
 <body>
 <main>
 <h1>mortise<span class="dot">.</span></h1>
-  <p class="hero-headline">Deploy anything, own everything.</p>
   <p class="tagline">Push code and get a live app with TLS, DNS, ingress, builds, and a container registry running on your cluster in minutes.</p>
 
   <h2>Install</h2>
@@ -256,7 +246,7 @@ helm install mortise mortise/mortise \
   --namespace mortise-system --create-namespace</code></pre>
   </div>
 
-  <h2>What you get</h2>
+  <h2>Deploy anything, own everything.</h2>
   <ul class="features">
     <li><strong>Git push deploys.</strong> Connect a repo, Mortise builds and ships it.</li>
     <li><strong>Image deploys.</strong> Point at an OCI image, done.</li>
