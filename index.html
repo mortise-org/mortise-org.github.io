@@ -158,6 +158,20 @@
     font-size: 12px;
   }
 
+  .video-wrap {
+    margin-top: 40px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--surface-600);
+    background: var(--surface-800);
+    line-height: 0;
+  }
+  .video-wrap video {
+    width: 100%;
+    display: block;
+    border-radius: var(--radius-lg);
+  }
+
   .alt-install {
     margin-top: 48px;
     padding: 20px;
@@ -266,6 +280,12 @@
     <a class="star-cta" href="https://github.com/mortise-org/mortise" target="_blank" rel="noopener noreferrer">⭐ Star on GitHub</a>
   </div>
   <p class="tagline">Deploy anything, own everything.</p>
+
+  <div class="video-wrap">
+    <video autoplay muted loop playsinline preload="metadata">
+      <source src="/mortise-demo.mp4" type="video/mp4" />
+    </video>
+  </div>
 
   <h2>Install</h2>
   <div class="tabs" role="tablist" aria-label="Install platform">
