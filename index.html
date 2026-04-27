@@ -172,6 +172,69 @@
     border-radius: var(--radius-lg);
   }
 
+  .ch-bar {
+    display: flex;
+    margin-top: 10px;
+    background: var(--surface-800);
+    border: 1px solid var(--surface-600);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .ch-seg {
+    flex: 1;
+    position: relative;
+    padding: 8px 6px;
+    background: none;
+    border: none;
+    border-left: 1px solid var(--surface-600);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--fg-dim);
+    font: inherit;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: color 0.15s;
+    text-align: left;
+  }
+  .ch-seg:first-child { border-left: none; }
+  .ch-seg:hover:not(.active) { color: var(--fg-muted); }
+  .ch-seg.active { color: var(--fg); }
+  .ch-seg.done .ch-fill { width: 100%; opacity: 0.5; }
+  .ch-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: var(--accent);
+    opacity: 0.35;
+    pointer-events: none;
+    will-change: width;
+  }
+  .ch-label {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ch-label svg { flex-shrink: 0; }
+  .ch-sub {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg-muted);
+    min-height: 3em;
+    transition: opacity 0.2s ease;
+  }
+  .ch-sub.fade { opacity: 0; }
+  @media (max-width: 540px) {
+    .ch-label span { display: none; }
+    .ch-seg { padding: 8px 4px; }
+  }
+
   .alt-install {
     margin-top: 48px;
     padding: 20px;
@@ -282,9 +345,14 @@
   <p class="tagline">Deploy anything, own everything.</p>
 
   <div class="video-wrap">
-    <video autoplay muted loop playsinline preload="metadata">
+    <video id="demo-video" autoplay muted loop playsinline preload="metadata">
       <source src="/mortise-demo.mp4" type="video/mp4" />
     </video>
+  </div>
+
+  <div id="chapters">
+    <div class="ch-bar" role="tablist" aria-label="Demo chapters"></div>
+    <p class="ch-sub" id="ch-sub"></p>
   </div>
 
   <h2>Install</h2>
@@ -358,6 +426,137 @@ helm install mortise mortise/mortise \
     t.addEventListener('click', function () { activate(t.dataset.os); });
   });
   activate(os);
+})();
+
+(function () {
+  var VIDEO_DURATION = 90.645;
+  var CHAPTERS = [
+    {
+      time: 0, label: 'Install',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>',
+      sub: 'One command bootstraps a full Kubernetes cluster with BuildKit, a private registry, Traefik, and cert-manager, then opens the Mortise UI. No YAML, no kubectl required.'
+    },
+    {
+      time: 11, label: 'Onboard',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>',
+      sub: 'First-run setup creates your admin account. Invite teammates by email and each user authenticates independently via device flow, with credentials stored securely in-cluster.'
+    },
+    {
+      time: 16, label: 'Projects',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>',
+      sub: 'Projects group your apps and services into isolated namespaces. Mortise provisions the Kubernetes namespace and RBAC automatically so you never touch cluster config.'
+    },
+    {
+      time: 19, label: 'Apps',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+      sub: 'Every workload is an App: services, databases, and caches all share one model. Choose from prebuilt templates including Postgres, Redis, and Supabase, or bring your own repo.'
+    },
+    {
+      time: 25, label: 'Connect',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8"/><path d="M8 6h4a4 4 0 014 4v2"/></svg>',
+      sub: 'GitHub, GitLab, and Gitea are supported out of the box. Device flow means no tokens to copy-paste. Authorize in your browser and Mortise stores credentials as encrypted secrets scoped to your account.'
+    },
+    {
+      time: 39, label: 'Manage',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="9" cy="6" r="2" fill="var(--surface-800)"/><circle cx="15" cy="12" r="2" fill="var(--surface-800)"/><circle cx="9" cy="18" r="2" fill="var(--surface-800)"/></svg>',
+      sub: 'Every app has a live drawer with streaming logs, metrics, and env var controls. Under Settings, define a custom domain and Mortise provisions TLS automatically via cert-manager.'
+    },
+    {
+      time: 55, label: 'Deploy',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2l4-4-3-3-4 4z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11A22.35 22.35 0 0112 15z"/></svg>',
+      sub: 'Pick a repo, choose a branch, and select a build mode. Railpack auto-detects your stack or bring your own Dockerfile. Env vars are injected before the first build and scoped per environment.'
+    },
+    {
+      time: 78, label: 'Scale',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v3m0 0l-5 6m5-6l5 6"/></svg>',
+      sub: 'The canvas grows with your stack. Wire services together and bindings like DATABASE_URL are injected automatically. No secret management, no YAML.'
+    },
+    {
+      time: 82, label: 'Access',
+      icon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>',
+      sub: 'Every app gets a subdomain the moment it is healthy, with TLS provisioned automatically. Supabase Studio is live on a public URL with zero extra config.'
+    },
+  ];
+
+  var video = document.getElementById('demo-video');
+  var bar   = document.querySelector('.ch-bar');
+  var sub   = document.getElementById('ch-sub');
+  if (!video || !bar) return;
+
+  // Build segments
+  var fills = [];
+  var segs = CHAPTERS.map(function (ch, i) {
+    var btn = document.createElement('button');
+    btn.className = 'ch-seg';
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-label', ch.label);
+    btn.innerHTML =
+      '<div class="ch-fill"></div>' +
+      '<div class="ch-label">' + ch.icon + '<span>' + ch.label + '</span></div>';
+    btn.addEventListener('click', function () {
+      video.currentTime = ch.time;
+      if (video.paused) video.play();
+    });
+    bar.appendChild(btn);
+    fills.push(btn.querySelector('.ch-fill'));
+    return btn;
+  });
+
+  var lastIdx = -1;
+  var prevTime = 0;
+  var rafId = null;
+
+  function applyFrame(t) {
+    var idx = 0;
+    for (var i = CHAPTERS.length - 1; i >= 0; i--) {
+      if (t >= CHAPTERS[i].time) { idx = i; break; }
+    }
+    var end = idx + 1 < CHAPTERS.length ? CHAPTERS[idx + 1].time : VIDEO_DURATION;
+    var pct = Math.min(1, (t - CHAPTERS[idx].time) / (end - CHAPTERS[idx].time)) * 100;
+
+    for (var j = 0; j < segs.length; j++) {
+      if (j < idx) {
+        segs[j].classList.remove('active'); segs[j].classList.add('done');
+        fills[j].style.width = '100%';
+      } else if (j === idx) {
+        segs[j].classList.add('active'); segs[j].classList.remove('done');
+        fills[j].style.width = pct.toFixed(2) + '%';
+      } else {
+        segs[j].classList.remove('active', 'done');
+        fills[j].style.width = '0%';
+      }
+    }
+
+    if (idx !== lastIdx) {
+      lastIdx = idx;
+      sub.classList.add('fade');
+      var captured = CHAPTERS[idx].sub;
+      setTimeout(function () { sub.textContent = captured; sub.classList.remove('fade'); }, 200);
+    }
+  }
+
+  function tick() {
+    var t = video.currentTime;
+    // Detect loop: time jumped back past 2s
+    if (prevTime > 2 && t < 1) {
+      lastIdx = -1;
+      for (var i = 0; i < segs.length; i++) {
+        segs[i].classList.remove('active', 'done');
+        fills[i].style.width = '0%';
+      }
+    }
+    prevTime = t;
+    applyFrame(t);
+    rafId = requestAnimationFrame(tick);
+  }
+
+  sub.textContent = CHAPTERS[0].sub;
+  applyFrame(0);
+
+  video.addEventListener('play',  function () { if (!rafId) rafId = requestAnimationFrame(tick); });
+  video.addEventListener('pause', function () { cancelAnimationFrame(rafId); rafId = null; });
+  // Also run RAF immediately in case autoplay fires before our listeners attach
+  rafId = requestAnimationFrame(tick);
 })();
 
 function copyPre(btn) {
